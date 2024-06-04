@@ -1,0 +1,178 @@
+𝐉𝐨𝐛 𝟏
+
+**-𝐈𝐧𝐬𝐭𝐚𝐥𝐥𝐚𝐭𝐢𝐨𝐧 ** 
+                sudo apt-get install docker.io
+
+----------------------------------------------------------------------------------------
+                
+  𝐉𝐨𝐛𝟐  
+
+ -Run hello-world: 
+
+             ` sudo docker run hello-world` 
+  ----------------------------------------------------------------------------------------------------------------------------------------------
+   𝐉𝐨𝐛𝟑
+
+             
+- 𝐂𝐫𝐞𝐚𝐭 𝐝𝐨𝐜𝐤𝐞𝐫 𝐢𝐦𝐚𝐠𝐞 𝐟𝐨𝐫  𝐡𝐞𝐥𝐥𝐨-𝐰𝐨𝐫𝐥𝐝 :
+
+               - [ ] créé dockerfile 
+               `- FROM debian:buster-slim`
+`RUN apt-get update && apt-get install -y --no-install-recommends hello`
+`CMD ["hellllo"]`
+
+𝐓𝐡𝐞𝐧 𝐑𝐮𝐧 𝐭𝐡𝐨𝐬𝐞 𝐜𝐨𝐦𝐦𝐚𝐧𝐝𝐬 :
+
+          `sudo docker build -t helloworld` 
+             `sudo docker run helloworld`
+--------------------------------------------------------------------------------------------------------
+𝐉𝐎𝐁 𝟒
+
+𝐟𝐢𝐫𝐬𝐭 𝐜𝐫𝐞𝐚𝐭𝐞 𝐝𝐨𝐜𝐤𝐞𝐫𝐟𝐢𝐥𝐥𝐞𝐬 𝐢𝐦𝐚𝐠𝐞 𝐰𝐢𝐭𝐡 𝐭𝐡𝐢𝐬 𝐜𝐨𝐝𝐞 : 
+
+                `FROM debian:buster-slim`
+`RUN apt-get update && apt-get install -y openssh-server`# `` 
+RUN mkdir /var/run/sshd
+`RUN echo "root:root123" | chpasswd -m root` 
+RUN sed -i 's/#Port 22/Port 2222/' /etc/ssh/sshd_config
+`RUN sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config`
+`RUN sed -i 's/#PermitRootLogin yes/PermitRootLogin yes/' /etc/ssh/sshd_config`
+`EXPOSE 2222`
+`CMD ["/usr/sbin/sshd", "-D", "2222"]`
+```
+
+𝐚𝐟𝐭𝐞𝐫 𝐰𝐞 𝐫𝐮𝐧 𝐭𝐡𝐨𝐬𝐞 𝐜𝐨𝐦𝐦𝐚𝐧𝐝𝐬 𝐭𝐨 𝐦𝐚𝐤𝐞 𝐬𝐮𝐫 𝐢𝐭'𝐬 𝐰𝐨𝐫𝐤 :
+
+```
+                sudo docker build -t ssh-server-image . 
+                 sudo docker run -d -p 2222:2222 --name ssh-server my-ssh-server-
+                ssh root@<your_container_ip> -p 2222 to connect ssh 
+```
+--------------------------------------------------------------------------------------------------------
+
+𝐉𝐎𝐁 𝟓 : 
+
+𝒇𝒊𝒓𝒔𝒕  𝒐𝒇 𝒂𝒍𝒍 : 
+- Go in mode sudo 
+- then open nano ~/.bashrc
+- then add the alias  ex: `dpsa() { sudo docker ps -a "$@" }`
+- then try it "dpsa"
+- Then booooooomb it's work
+------------------------------------------------------------------------------------------------------------------------------------------------
+𝐉𝐎𝐁 𝟔 : 
+
+I should do it in french 😂
+𝐔𝐭𝐢𝐥𝐢𝐬𝐚𝐭𝐢𝐨𝐧 𝐝𝐞𝐬 𝐕𝐨𝐥𝐮𝐦𝐞𝐬 𝐃𝐨𝐜𝐤𝐞𝐫 : 
+
+1. **𝐂𝐨𝐦𝐩𝐫𝐞𝐧𝐝𝐫𝐞 𝐥𝐞𝐬 𝐯𝐨𝐥𝐮𝐦𝐞𝐬 𝐃𝐨𝐜𝐤𝐞𝐫 :**
+    
+    - Un volume Docker est un mécanisme de stockage persistant pour les conteneurs.
+    - Les volumes permettent de partager des données entre plusieurs conteneurs et de conserver les données même après la suppression des conteneurs.
+    - 
+-𝐄𝐗  𝐝𝐞 𝐂𝐫é𝐞𝐫 𝐞𝐭 𝐠é𝐫𝐞𝐫 𝐝𝐞𝐬 𝐯𝐨𝐥𝐮𝐦𝐞𝐬:
+
+          `docker volume create my_volume`
+          **Lister les volumes :**
+          `docker volume ls`
+          **Inspecter un volume :**
+          `docker volume inspect my_volume`
+          **Supprimer un volume**
+          `docker volume rm my_volume`
+      **Utiliser un volume entre deux conteneurs :**
+      
+      𝐂𝐫é𝐞𝐫 𝐝𝐞𝐮𝐱 𝐜𝐨𝐧𝐭𝐞𝐧𝐞𝐮𝐫𝐬 𝐩𝐚𝐫𝐭𝐚𝐠𝐞𝐚𝐧𝐭 𝐥𝐞 𝐦ê𝐦𝐞 𝐯𝐨𝐥𝐮𝐦𝐞 :**
+
+        `docker run -d --name container1 -v my_volume:/data busybox`
+        `docker run -d --name container2 -v my_volume:/data busybox`
+
+
+
+-------------------------------------------------------------------------
+# 𝐉𝐎𝐁 𝟕
+
+
+**𝐒𝐭𝐞𝐩𝐬 :** 
+
+     1- C𝐫𝐞𝐚𝐭 𝐲𝐚𝐦𝐥 𝐟𝐢𝐥𝐞 𝐰𝐢𝐭𝐡 𝐭𝐡𝐞 𝐟𝐚𝐥𝐥𝐰𝐨𝐢𝐧𝐠 𝐜𝐨𝐝𝐞
+
+    
+```
+     version: '3'
+
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - webdata:/usr/share/nginx/html
+  ftp:
+    image: fauria/vsftpd
+    ports:
+      - "21:21"
+      - "21000-21010:21000-21010"
+    volumes:
+      - webdata:/home/vsftpd
+    environment:
+      - FTP_USER=User
+      - FTP_PASS=Pass
+      - PASV_ADDRESS=127.0.0.1
+      - PASV_MIN_PORT=21000
+      - PASV_MAX_PORT=21010
+
+volumes:
+  webdata:
+
+```
+            
+
+
+# 𝟐- C𝐫𝐞𝐚𝐭𝐞 𝐢𝐧𝐝𝐞𝐱.𝐡𝐭𝐦𝐥 𝐟𝐢𝐥𝐞 𝐢𝐧 𝐭𝐡𝐞 𝐩𝐜 
+          with an html code that show ur name or something like this 
+
+#### 𝟑- 𝐈𝐧𝐬𝐭𝐚𝐥𝐥 𝐟𝐢𝐥𝐞𝐳𝐢𝐥𝐥𝐚
+
+     after restarting ftp serveice connect with ur  ip to filezilla and try to  download index.html file with the command "get"
+
+4. 𝐒𝐭𝐚𝐫𝐭 𝐭𝐡𝐞 𝐃𝐨𝐜𝐤𝐞𝐫 𝐜𝐨𝐧𝐭𝐚𝐢𝐧𝐞𝐫𝐬:
+
+Open a terminal, navigate to the directory where your `docker-compose.yml` file is located, and run:
+                           `docker-compose up -d`
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+### 𝐉𝐨𝐛 𝟖: 
+
+#### 𝐂𝐫é𝐞𝐫 𝐮𝐧 𝐜𝐨𝐧𝐭𝐞𝐧𝐞𝐮𝐫 𝐍𝐠𝐢𝐧𝐱 𝐚𝐯𝐞𝐜 𝐃𝐨𝐜𝐤𝐞𝐫𝐟𝐢𝐥𝐞
+
+1. **Créer un fichier `Dockerfile` pour Nginx :**
+FROM debian:latest
+
+RUN apt-get update && \
+    apt-get install -y nginx && \
+    echo "daemon off;" >> /etc/nginx/nginx.conf
+
+COPY webdata /home/firo/nginx
+EXPOSE 80
+
+CMD ["nginx"]
+
+2- 𝐂𝐨𝐧𝐬𝐭𝐫𝐮𝐢𝐫𝐞 𝐢𝐦𝐚𝐠𝐞 𝐃𝐨𝐜𝐤𝐞𝐫 :
+
+`docker build -t custom-nginx .`
+3- **𝐄𝐱é𝐜𝐮𝐭𝐞𝐫 𝐥𝐞 𝐜𝐨𝐧𝐭𝐞𝐧𝐞𝐮𝐫 :**
+`docker run -d -p 8080:80 custom-nginx`
+
+-----------------------------------------------------------------
+
+𝐉𝐨𝐛 𝟎𝟗:
+
+𝐂𝐫é𝐚𝐭𝐢𝐨𝐧 𝐞𝐭 𝐔𝐭𝐢𝐥𝐢𝐬𝐚𝐭𝐢𝐨𝐧 𝐝'𝐮𝐧 𝐑𝐞𝐠𝐢𝐬𝐭𝐫𝐲 𝐋𝐨𝐜𝐚𝐥
+
+**1. 𝐋𝐚𝐧𝐜𝐞𝐫 𝐮𝐧 𝐫𝐞𝐠𝐢𝐬𝐭𝐫𝐞 𝐥𝐨𝐜𝐚𝐥 :**
+docker run -d -p 5000:5000 --restart=always --name registry registry:2
+**2.𝐋𝐚𝐧𝐜𝐞𝐫 𝐮𝐧𝐞 𝐔𝐈 𝐩𝐨𝐮𝐫 𝐥𝐞 𝐫𝐞𝐠𝐢𝐬𝐭𝐫𝐞 :**
+docker run -d -p 8081:80 --name registry-ui --link registry:registry joxit/docker-registry-ui:latest
+**3. 𝐀𝐜𝐜é𝐝𝐞𝐳 à 𝐥'𝐔𝐈 𝐯𝐢𝐚 `http://localhost:8081`.**
+
+----------------------------------------------------------------------
+
